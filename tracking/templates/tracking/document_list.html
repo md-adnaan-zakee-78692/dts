@@ -1,0 +1,53 @@
+{% extends "tracking/base.html" %}
+{% comment %} {% extends "tracking/base.html" %}
+{% block content %}
+  <h2>Your Assigned Documents</h2>
+  <ul>
+    {% for doc in object_list %}
+      <li>
+        {{ doc.title }} - {{ doc.status }}
+        [<a href="{% url 'document-action' doc.pk %}">Take Action</a>]
+      </li>
+    {% empty %}
+      <li>No documents assigned to you.</li>
+    {% endfor %}
+  </ul>
+  <p><a href="{% url 'document-create' %}">Create New Document</a></p>
+{% endblock %} {% endcomment %}
+
+
+
+{% block content %}
+<h2>Your Assigned Documents</h2>
+<ul>
+    {% for doc in object_list %}
+    <li>
+        <strong>Document ID:</strong> {{ doc.formatted_doc_id }}<br>
+        <strong>Title:</strong> {{ doc.title }}<br>
+        <strong>Status:</strong> {{ doc.status }}<br>
+        <strong>Sent To:</strong> {{ doc.current_handler.username }}<br>
+        <strong>Sent At:</strong> {{ doc.sent_at|date:"Y-m-d H:i" }}<br>
+        <strong>Last Approved By:</strong> 
+        {% if doc.last_approved_by %}
+            {{ doc.last_approved_by.username }}
+        {% else %}
+            N/A
+        {% endif %}
+        <br>
+        {% if request.user == doc.current_handler %}
+        <a href="{% url 'document-action' doc.pk %}">Take Action</a>
+        {% endif %}
+        <hr>
+    </li>
+    {% endfor %}
+</ul>
+{% if user.role == 'A' %}
+    <a href="{% url 'document-create' %}">Create New Document</a>
+{% endif %}
+
+
+
+
+
+
+{% endblock content%}

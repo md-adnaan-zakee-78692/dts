@@ -1,0 +1,138 @@
+{% extends 'tracking/base.html' %}
+{% comment %} 
+
+
+{% block content %}
+<h2>📊 Dashboard for {{ request.user.username }}</h2>
+
+<ul>
+  <li><strong>Total Documents Created:</strong> {{ stats.created }}</li>
+  <li><strong>Pending:</strong> {{ stats.PENDING }}</li>
+  <li><strong>Approved:</strong> {{ stats.APPROVED }}</li>
+  <li><strong>Rejected:</strong> {{ stats.REJECTED }}</li>
+  <li><strong>Completed:</strong> {{ stats.COMPLETED }}</li>
+  <li><strong>Actions Taken:</strong> {{ stats.actions_total }}</li>
+</ul>
+
+<hr>
+
+
+<h3>📈 Document Status Overview</h3>
+<div style="max-width: 500px; margin: 20px auto;">
+    <canvas id="statusChart"></canvas>
+</div>
+
+<h3>✔️ Action Types</h3>
+<div style="max-width: 400px; margin: 20px auto;">
+    <canvas id="actionChart"></canvas>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const statusCtx = document.getElementById('statusChart').getContext('2d');
+const statusChart = new Chart(statusCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Pending', 'Approved', 'Rejected', 'Completed'],
+        datasets: [{
+            label: 'Documents',
+            data: [
+                {{ stats.PENDING }},
+                {{ stats.APPROVED }},
+                {{ stats.REJECTED }},
+                {{ stats.COMPLETED }}
+            ],
+            backgroundColor: ['orange', 'green', 'red', 'blue'],
+            borderWidth: 1
+        }]
+    }
+});
+
+const actionCtx = document.getElementById('actionChart').getContext('2d');
+const actionChart = new Chart(actionCtx, {
+    type: 'pie',
+    data: {
+        labels: ['Approve', 'Reject'],
+        datasets: [{
+            label: 'Actions',
+            data: [{{ stats.approve_count }}, {{ stats.reject_count }}],
+            backgroundColor: ['#4caf50', '#f44336']
+        }]
+    }
+});
+</script>
+{% endblock %}
+ {% endcomment %}
+
+
+
+
+
+
+
+
+
+
+
+
+{% block content %}
+<h2>📊 Dashboard for {{ request.user.username }}</h2>
+
+<ul>
+  <li><strong>Total Documents Created:</strong> {{ stats.created }}</li>
+  <li><strong>Pending:</strong> {{ stats.PENDING }}</li>
+  <li><strong>Approved:</strong> {{ stats.APPROVED }}</li>
+  <li><strong>Rejected:</strong> {{ stats.REJECTED }}</li>
+  <li><strong>Completed:</strong> {{ stats.COMPLETED }}</li>
+  <li><strong>Actions Taken:</strong> {{ stats.actions_total }}</li>
+</ul>
+
+<hr>
+
+<h3>📈 Document Status Overview</h3>
+<div style="max-width: 500px; margin: 20px auto;">
+    <canvas id="statusChart" width="500" height="400"></canvas>
+</div>
+
+<h3>✔️ Action Types</h3>
+<div style="max-width: 400px; margin: 20px auto;">
+    <canvas id="actionChart" width="400" height="400"></canvas>
+</div>
+
+<!-- Include Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
+<script>
+const statusCtx = document.getElementById('statusChart').getContext('2d');
+const statusChart = new Chart(statusCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Pending', 'Approved', 'Rejected', 'Completed'],
+        datasets: [{
+            label: 'Documents',
+            data: [
+                {{ stats.PENDING }},
+                {{ stats.APPROVED }},
+                {{ stats.REJECTED }},
+                {{ stats.COMPLETED }}
+            ],
+            backgroundColor: ['orange', 'green', 'red', 'blue'],
+            borderWidth: 1
+        }]
+    }
+});
+
+const actionCtx = document.getElementById('actionChart').getContext('2d');
+const actionChart = new Chart(actionCtx, {
+    type: 'pie',
+    data: {
+        labels: ['Approve', 'Reject'],
+        datasets: [{
+            label: 'Actions',
+            data: [{{ stats.approve_count }}, {{ stats.reject_count }}],
+            backgroundColor: ['#4caf50', '#f44336']
+        }]
+    }
+});
+</script>
+{% endblock %}

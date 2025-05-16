@@ -1,0 +1,48 @@
+{% extends "tracking/base.html" %}
+{% comment %} {% extends "tracking/base.html" %}
+{% block content %}
+  <h2>Document: {{ document.title }}</h2>
+  <p>{{ document.content }}</p>
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Action</button>
+  </form>
+{% endblock %} {% endcomment %}
+
+
+
+{% block content %}
+  <h2>Document: {{ document.title }}</h2>
+  <p><strong>Content:</strong> {{ document.content }}</p>
+  <p><strong>Status:</strong> {{ document.status }}</p>
+
+  <hr>
+  <h3>Take Action</h3>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit Action</button>
+  </form>
+
+  <hr>
+  <h3>Document History</h3>
+  {% if actions %}
+    <ul>
+      {% for act in actions %}
+        <li>
+          <strong>{{ act.timestamp|date:"Y-m-d H:i" }}</strong> -
+          {{ act.user.username }} (Role {{ act.user.role }}) -
+          <strong>{{ act.action }}</strong><br>
+          {% if act.comment %}
+            Comment: {{ act.comment }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No actions taken yet.</p>
+  {% endif %}
+{% endblock %}
+
